@@ -10,6 +10,6 @@ public class TitleButton : MonoBehaviour
     public void Onclick()
     {
         //ここで移りたいシーンを指定します。
-        SceneManager.LoadScene("lobby");
+        SceneManager.LoadScene("Title");
     }
 }
