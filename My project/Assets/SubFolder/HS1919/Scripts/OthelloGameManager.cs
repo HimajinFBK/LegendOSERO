@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class OthelloGameManager : MonoBehaviour
 {
+    
     private const int BoardSize = 8; // オセロボードのサイズ
     private int[,] board = new int[BoardSize, BoardSize]; // ボードの状態（0: 空, 1: 黒, 2: 白）
 
