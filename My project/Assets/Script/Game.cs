@@ -204,8 +204,8 @@ public class Game : SingletonMonoBehaviour<Game>
                         int blackScore;
                         int whiteScore;
                         CalcScore(out blackScore, out whiteScore);
-                        _resultText.text = blackScore < whiteScore ? "White Win"
-                            : blackScore > whiteScore ? "Black Win" : "Draw";
+                        _resultText.text = blackScore < whiteScore ? "Black Win"
+                            : blackScore > whiteScore ? "White Win" : "Draw";
                         _resultText.gameObject.SetActive(true);
                     }
 
