@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using Photon.Pun.Demo.Procedural;
 
 
 //オセロゲームの管理
@@ -49,6 +50,7 @@ public class Game : SingletonMonoBehaviour<Game>
     public GameObject Cursor { get { return _cursor; } }
     public Stone[][] Stones { get; private set; }
     public State CurrentState { get; private set; } = State.None;
+
 
     // 駒の位置とオブジェクトのマッピング
     private Dictionary<Vector3Int, GameObject> pieces = new Dictionary<Vector3Int, GameObject>(); 
@@ -161,6 +163,7 @@ public class Game : SingletonMonoBehaviour<Game>
                         Reverse(Stone.Color.Black, x, z);
                         UpdateScore();
 
+
                         // 敵が置けるかチェック
                         if (_enemyPlayer.CanPut())
                         {
@@ -179,15 +182,18 @@ public class Game : SingletonMonoBehaviour<Game>
                     // 敵が石を置けるかチェック
                     if (_enemyPlayer.TryGetSelected(out var x, out var z))
                     {
+                        // 白の石を置き、ひっくり返し処理を行う
                         Stones[z][x].SetActive(true, Stone.Color.White);
                         PlacePiece(x, z, 2);
                         Reverse(Stone.Color.White, x, z);
                         UpdateScore();
 
+
                         // プレイヤーが置けるかチェック
                         if (_seifPlayer.CanPut())
                         {
                             CurrentState = State.BlackTurn;
+                            
                         }
                         else if (!_enemyPlayer.CanPut())
                         {
@@ -204,8 +210,8 @@ public class Game : SingletonMonoBehaviour<Game>
                         int blackScore;
                         int whiteScore;
                         CalcScore(out blackScore, out whiteScore);
-                        _resultText.text = blackScore < whiteScore ? "White Win"
-                            : blackScore > whiteScore ? "Black Win" : "Draw";
+                        _resultText.text = blackScore < whiteScore ? "Black Win"
+                            : blackScore > whiteScore ? "White Win" : "Draw";
                         _resultText.gameObject.SetActive(true);
                     }
 
@@ -371,6 +377,37 @@ public class Game : SingletonMonoBehaviour<Game>
         else
         {
             Debug.Log("No adjacent positions to flip");
+        }
+    }
+
+    private void RandomReverseAdjacentStones(int x, int z)
+    {
+        // 周囲の8方向の座標を定義
+        var directions = new (int, int)[]
+        {
+            (0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)
+        };
+
+        foreach (var (dx, dz) in directions)
+        {
+            int newX = x + dx;
+            int newZ = z + dz;
+
+            // ボードの範囲内かチェック
+            if (newX >= 0 && newX < Game.XNum && newZ >= 0 && newZ < Game.ZNum)
+            {
+                // ランダムにひっくり返すかどうかを決定
+                if (UnityEngine.Random.value > 0.5f)
+                {
+                    var currentColor = Game.Instance.Stones[newZ][newX].GetColor();
+                    if (currentColor != Stone.Color.None)
+                    {
+                        var newColor = currentColor == Stone.Color.Black ? Stone.Color.White : Stone.Color.Black;
+                        Game.Instance.Stones[newZ][newX].SetActive(true, newColor);
+                        Game.Instance.board[newX, newZ] = newColor == Stone.Color.Black ? 1 : 2;
+                    }
+                }
+            }
         }
     }
 }

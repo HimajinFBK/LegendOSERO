@@ -125,5 +125,34 @@ public class Stone : MonoBehaviour
                 break;
         }
     }
+    private void RandomReverseAdjacentStones(int x, int z)
+    {
+        // 周囲の8方向の座標を定義
+        var directions = new (int, int)[]
+        {
+            (0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)
+        };
 
+        foreach (var (dx, dz) in directions)
+        {
+            int newX = x + dx;
+            int newZ = z + dz;
+
+            // ボードの範囲内かチェック
+            if (newX >= 0 && newX < Game.XNum && newZ >= 0 && newZ < Game.ZNum)
+            {
+                // ランダムにひっくり返すかどうかを決定
+                if (UnityEngine.Random.value > 0.5f)
+                {
+                    var currentColor = Game.Instance.Stones[newZ][newX].GetColor();
+                    if (currentColor != Stone.Color.None)
+                    {
+                        var newColor = currentColor == Stone.Color.Black ? Stone.Color.White : Stone.Color.Black;
+                        Game.Instance.Stones[newZ][newX].SetActive(true, newColor);
+                        Game.Instance.board[newX, newZ] = newColor == Stone.Color.Black ? 1 : 2;
+                    }
+                }
+            }
+        }
+    }
 }

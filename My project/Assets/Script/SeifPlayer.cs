@@ -13,9 +13,29 @@ public class SeifPlayer : Player
     private Vector3Int _cursorPos = Vector3Int.zero;// カーソルの位置を保持する変数
     private Vector3Int? _desidedPos = null;// 決定された位置を保持する変数
 
-    private float strongPlaceThreshold = 1.0f; // 強く置くための時間閾値
-    private float keyHoldTime = 0f; // キー保持時間
-    private bool isHoldingKey = false; // キーが保持されているかどうか
+    private float pressStartTime;
+    private const float longPressThreshold = 1.0f; // 長押しとみなす閾値（秒）
+
+    public bool IsLongPress()
+    {
+        if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.Space))
+        {
+            if (pressStartTime == 0f)
+            {
+                pressStartTime = Time.time; // キーが押され始めた時間を記録
+            }
+            else if (Time.time - pressStartTime > longPressThreshold)
+            {
+                return true; // 長押しと判定
+            }
+        }
+        else
+        {
+            pressStartTime = 0f; // キーが離されたら時間をリセット
+        }
+
+        return false; // 長押しでない
+    }
 
 
 
@@ -86,8 +106,7 @@ public class SeifPlayer : Player
         else if (keyboard.enterKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame)
         {//エンターキーを押してコマ配置
 
-            keyHoldTime = 0f; // キー保持時間をリセット
-            isHoldingKey = true; // キー保持状態にする
+           
 
             if (Game.Instance.CalcTotalReverseCount(MyColor, _cursorPos.x, _cursorPos.z) > 0)
             {
@@ -99,6 +118,11 @@ public class SeifPlayer : Player
                     _desidedPos = _cursorPos;
                     Game.Instance.Cursor.SetActive(false);
                     HideDots();
+                }
+                // 長押しが検出された場合の追加処理
+                if (IsLongPress())
+                {
+                  //  RandomReverseAdjacentStones(_cursorPos.x, _cursorPos.z);
                 }
             }
         }
@@ -152,5 +176,7 @@ public class SeifPlayer : Player
             }
         }
     }
+
+
 }
  
