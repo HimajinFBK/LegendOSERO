@@ -111,7 +111,7 @@ public class Game : SingletonMonoBehaviour<Game>
         // ボードの初期化
         board = new int[BoardSize, BoardSize];
 
-       
+        
     }
 
     // Update is called once per frame
@@ -360,17 +360,5 @@ public class Game : SingletonMonoBehaviour<Game>
             }
         }
 
-        if (adjacentPositions.Count > 0)
-        {
-            int randomIndex = Random.Range(0, adjacentPositions.Count);
-            Vector3Int pos = adjacentPositions[randomIndex];
-            Debug.Log($"Flipping piece at x = {pos.x}, y = {pos.y} for player = {player}"); // デバッグメッセージ
-            board[pos.x, pos.y] = player;
-            PlacePieceVisual(pos.x, pos.y, player); // ランダムに1つひっくり返す
-        }
-        else
-        {
-            Debug.Log("No adjacent positions to flip");
-        }
     }
 }
