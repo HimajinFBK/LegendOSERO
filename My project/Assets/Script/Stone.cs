@@ -125,7 +125,7 @@ public class Stone : MonoBehaviour
                 break;
         }
     }
-    private void RandomReverseAdjacentStones(int x, int z)
+  /*  private void RandomReverseAdjacentStones(int x, int z)
     {
         // üˆÍ‚Ì8•ûŒü‚ÌÀ•W‚ğ’è‹`
         var directions = new (int, int)[]
@@ -154,5 +154,5 @@ public class Stone : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 }

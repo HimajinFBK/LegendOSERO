@@ -37,7 +37,7 @@ public abstract class Player : MonoBehaviour
             {
                 // 現在の座標に石が置かれていない場合
                 if (stones[z][x].CurrentState == Stone.State.None)
-                {
+                {                                                                           //データ捜査にバグあり
                     // 現在の色の石を置いた場合にひっくり返せる石の数を計算
                     var reverseCount = game.CalcTotalReverseCount(MyColor, x, z);
 

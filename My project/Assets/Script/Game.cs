@@ -368,7 +368,7 @@ public class Game : SingletonMonoBehaviour<Game>
 
     }
 
-    private void RandomReverseAdjacentStones(int x, int z)
+   /* private void RandomReverseAdjacentStones(int x, int z)
     {
         // üˆÍ‚Ì8•ûŒü‚ÌÀ•W‚ğ’è‹`
         var directions = new (int, int)[]
@@ -397,5 +397,5 @@ public class Game : SingletonMonoBehaviour<Game>
                 }
             }
         }
-    }
+    }*/
 }
