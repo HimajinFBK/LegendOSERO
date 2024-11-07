@@ -44,13 +44,27 @@ public class GameStete
         List<Position> outflanked = LegalMoves[pos];
 
         Board[pos.Row, pos.Col] = movePlayer;
-        //fFlip Discs
-        //UP
-        //
+        FlipDiscs(outflanked);
+        UpdeteDiscCounts(movePlayer, outflanked.Count);
+        PassTurn();
 
         moveInfo = new MoveInfo { Player = movePlayer, Position = pos, Outflanked = outflanked };
         return true;
 
+    }
+
+    public IEnumerable<Position> OccupiedPositions()
+    {
+        for(int r=0;r<Rows;r++)
+        {
+            for(int c = 0; c < Cols; c++)
+            {
+                if (Board[r, c] != Player.None)
+                {
+                    yield return new Position(r,c);
+                }
+            }
+        }
     }
 
     private void FlipDiscs(List<Position> positions)
@@ -61,8 +75,50 @@ public class GameStete
         }
     }
 
+    private void UpdeteDiscCounts(Player movePlayer,int outflankedCount)
+    {
+        DiscCount[movePlayer] += outflankedCount + 1;
+        DiscCount[movePlayer.Opponent()]-= outflankedCount;
+    }
 
 
+    private void ChangePlayer()
+    {
+        CurrentPlayer=CurrentPlayer.Opponent();
+        LegalMoves=FindLegalMoves(CurrentPlayer);
+    }
+
+    private Player FindWinner()
+    {
+        if (DiscCount[Player.Black] > DiscCount[Player.White])
+        {
+            return Player.Black;
+        }
+        if (DiscCount[Player.White] > DiscCount[Player.Black])
+        {
+            return Player.White;
+        }
+
+        return Player.None;
+    }
+
+    private void PassTurn()
+    {
+        ChangePlayer();
+        if (LegalMoves.Count > 0)
+        {
+            return;
+        }
+
+        ChangePlayer();
+
+        if (LegalMoves.Count == 0)
+        {
+            CurrentPlayer = Player.None;
+            GameOver=true;
+            Winner=FindWinner();
+        }
+    }
 
     public bool IsInsideBoard(int r,int c)
     {
