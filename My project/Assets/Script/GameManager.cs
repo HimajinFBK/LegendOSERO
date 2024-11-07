@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<Player,Disc> discPrefabs=new Dictionary<Player,Disc>();
     private GameStete gameState=new GameStete();
     private Disc[,] discs = new Disc[8,8];
+    private bool canMove = true;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +49,11 @@ public class GameManager : MonoBehaviour
 
     private void OnBoardClicked(Position boardPos)
     {
+
+        if (!canMove)
+        {
+            return;
+        }
         if(gameState.MakeMove(boardPos,out MoveInfo moveInfo))
         {
             StartCoroutine(OnMoveMade(moveInfo));
