@@ -315,7 +315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &733287918
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -649,7 +649,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &978305948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,7 +839,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1134985433}
-  - component: {fileID: 1134985432}
+  - component: {fileID: 1134985434}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -847,26 +847,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1134985432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1134985431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 879d9120f7503de418ff3feaf8c687c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 1007744708}
-  boardLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  discBlackUp: {fileID: 8552301227524391763, guid: 3e55c6ccf22bdf7469ef75315cc1cf13, type: 3}
-  discWhiteUp: {fileID: 8552301227524391763, guid: 70df6d8e0a9b2f5408b4e47776dee2d2, type: 3}
-  highlightPrefab: {fileID: 8032204440878701617, guid: 41e568a7dd298554494f908f535c6430, type: 3}
-  uiManager: {fileID: 1877383313}
 --- !u!4 &1134985433
 Transform:
   m_ObjectHideFlags: 0
@@ -882,6 +862,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1134985434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134985431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc549e208ea2e9548ba83981101b0256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 1007744708}
+  boardLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  discBlackUP: {fileID: 1720656123006562706, guid: 98bb2d44ac062f0469d89284dc019963, type: 3}
+  discWhiteUp: {fileID: 7287890489042664873, guid: 28a3f312f101dac4081536fedfc22f76, type: 3}
 --- !u!1 &1144823182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1140,7 +1138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1592980018
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1603,7 +1601,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1877383314}
-  - component: {fileID: 1877383313}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -1611,24 +1608,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1877383313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877383312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92a73cae2efdaaa4e867f5287d1d946e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topText: {fileID: 1896603762}
-  blackScoreText: {fileID: 1209730345}
-  whiteScoreText: {fileID: 1992791768}
-  winnerText: {fileID: 859921667}
-  blackOverlay: {fileID: 2010514411}
-  playAgainButton: {fileID: 2081972039}
 --- !u!4 &1877383314
 Transform:
   m_ObjectHideFlags: 0
@@ -1661,7 +1640,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1896603761
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1703,8 +1682,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u9ED2\u306E\u30BF\u30FC\u30F3"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: -6920032741202915484, guid: db628a71a21001c4fbf4096684fa243b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
+  m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2204,7 +2183,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1134985432}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: OnPlayAgainClicked
         m_Mode: 1
