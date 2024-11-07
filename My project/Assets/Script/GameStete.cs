@@ -29,8 +29,40 @@ public class GameStete
         };
 
         CurrentPlayer=Player.Black;
+        LegalMoves = FindLegalMoves(CurrentPlayer);
+    }
+
+
+    public bool MakeMove(Position pos,out MoveInfo moveInfo)
+    {
+        if (!LegalMoves.ContainsKey(pos))
+        {
+            moveInfo = null;
+            return false;
+        }
+        Player movePlayer = CurrentPlayer;
+        List<Position> outflanked = LegalMoves[pos];
+
+        Board[pos.Row, pos.Col] = movePlayer;
+        //fFlip Discs
+        //UP
+        //
+
+        moveInfo = new MoveInfo { Player = movePlayer, Position = pos, Outflanked = outflanked };
+        return true;
 
     }
+
+    private void FlipDiscs(List<Position> positions)
+    {
+        foreach(Position pos in positions) 
+        {
+            Board[pos.Row, pos.Col] = Board[pos.Row, pos.Col].Opponent();
+        }
+    }
+
+
+
 
     public bool IsInsideBoard(int r,int c)
     {
@@ -58,6 +90,59 @@ public class GameStete
         }
 
         return new List<Position>();
+
+    }
+
+    private List<Position>Outflanked(Position pos,Player player)
+    {
+        List<Position>outflanked = new List<Position>();
+
+        for(int rDelta = -1; rDelta <= 1; rDelta++)
+        {
+            for(int cDelte = -1; cDelte <= 1; cDelte++)
+            {
+                if (rDelta == 0 && cDelte == 0)
+                {
+                    continue;
+                }
+
+                outflanked.AddRange(OutflankedInDir(pos, player, rDelta, cDelte));
+
+            }
+        }
+        return outflanked;
+    }
+
+    private bool IsMoveLegal(Player player, Position pos,out List<Position> outflanked)
+    {
+        if (Board[pos.Row, pos.Col] != Player.None)
+        {
+            outflanked = null;
+            return false;
+        }
+        outflanked = Outflanked(pos, player);
+        return outflanked.Count > 0;
+    }
+
+
+    private Dictionary<Position,List<Position>>FindLegalMoves(Player player)
+    {
+        Dictionary<Position,List<Position>> legalMoves = new Dictionary<Position,List<Position>>();
+
+        for(int r=0; r<Rows; r++)
+        {
+            for(int c=0; c < Cols; c++)
+            {
+                Position pos=new Position(r,c);
+
+                if(IsMoveLegal(player,pos, out List<Position> outflanked))
+                {
+                    legalMoves[pos]= outflanked;
+                }
+            }
+        }
+
+        return legalMoves;
 
     }
 
