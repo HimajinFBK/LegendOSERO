@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -13,10 +15,14 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Disc discWhiteUp;
 
+    [SerializeField]
+    private GameObject highlightPrefab;
+
     private Dictionary<Player,Disc> discPrefabs=new Dictionary<Player,Disc>();
     private GameStete gameState=new GameStete();
     private Disc[,] discs = new Disc[8,8];
     private bool canMove = true;
+    private List<GameObject> highlights = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +31,7 @@ public class GameManager : MonoBehaviour
         discPrefabs[Player.White] = discWhiteUp;
 
         AddStartDiscs();
+        ShowLeglMoves();
     }
 
     // Update is called once per frame
@@ -47,6 +54,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ShowLeglMoves()
+    {
+        foreach(Position boardPos in gameState.LegalMoves.Keys)
+        {
+            Vector3 scenePos=BoardToScenePos(boardPos)+Vector3.up*0.01f;
+            GameObject highlight= Instantiate(highlightPrefab,scenePos,Quaternion.identity);
+            highlights.Add(highlight);
+        }
+    }
+
+    private void HideLegalMoves()
+    {
+        highlights.ForEach(Destroy);
+        highlights.Clear();
+    }
+
+
     private void OnBoardClicked(Position boardPos)
     {
 
@@ -62,7 +86,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator OnMoveMade(MoveInfo moveInfo)
     {
+        canMove = false;
+        HideLegalMoves();
         yield return ShowMonve(moveInfo);
+        ShowLeglMoves();
+        canMove = true;
     }
 
 
