@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject highlightPrefab;
+    [SerializeField]
+    private UIManager uiManager;
 
     private Dictionary<Player,Disc> discPrefabs=new Dictionary<Player,Disc>();
     private GameStete gameState=new GameStete();
@@ -32,6 +34,7 @@ public class GameManager : MonoBehaviour
 
         AddStartDiscs();
         ShowLeglMoves();
+        uiManager.SetPlayerText(gameState.CurrentPlayer);
     }
 
     // Update is called once per frame
@@ -89,6 +92,7 @@ public class GameManager : MonoBehaviour
         canMove = false;
         HideLegalMoves();
         yield return ShowMonve(moveInfo);
+        uiManager.SetPlayerText(gameState.CurrentPlayer);
         ShowLeglMoves();
         canMove = true;
     }
