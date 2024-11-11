@@ -23,11 +23,11 @@ public class UIManager : MonoBehaviour
     {
         if (currentPlayer == Player.Black)
         {
-            topText.text = "黒のターン";
+            topText.text = "Black Turn";
         }
         else if(currentPlayer == Player.White)
         {
-            topText.text = "白のターン";
+            topText.text = "White Turn";
         }
     }
 
@@ -35,11 +35,11 @@ public class UIManager : MonoBehaviour
     {
         if (skippedPlayer == Player.Black)
         {
-            topText.text = "黒　スキップ";
+            topText.text = "Black skip";
         }
         else if(skippedPlayer== Player.White)
         {
-            topText.text = "白　スキップ";
+            topText.text = "White skip";
         }
     }
 
