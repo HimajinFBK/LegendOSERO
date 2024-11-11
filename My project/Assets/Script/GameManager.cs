@@ -148,11 +148,23 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private IEnumerator ShowGameOver(Player winner)
+    {
+        uiManager.SetTopText("Finish!!");
+        yield return uiManager.AnimateTopText();
+
+        yield return uiManager.ShowScoreText();
+        yield return new WaitForSeconds(0.5f);
+
+        yield return ShowCounting();
+    }
+
+
     private IEnumerator ShowTurnOutcome(MoveInfo moveInfo)
     {
         if (gameState.GameOver)
         {
-            //
+            yield return ShowGameOver(gameState.Winner);
             yield break;
         }
 
@@ -164,4 +176,29 @@ public class GameManager : MonoBehaviour
         }
         uiManager.SetPlayerText(currentPlayer);
     }
+    
+    public IEnumerator ShowCounting()
+    {
+        int black = 0,white = 0;
+
+        foreach(Position pos in gameState.OccupiedPositions())
+        {
+            Player player = gameState.Board[pos.Row, pos.Col];
+
+            if (player == Player.Black)
+            {
+                black++;
+                uiManager.SetBlackScoreTect(black);
+            }
+            else// if(player == Player.White)
+            {
+                white++;
+                uiManager.SetWhiteScoreText(white);
+
+            }
+            discs[pos.Row, pos.Col].Twitch();
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
 }
