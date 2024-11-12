@@ -5,7 +5,7 @@ using UnityEngine;
 public class Disc : MonoBehaviour
 {
     [SerializeField]
-    private Player up;
+    private Player up; // 現在のディスクの色
 
     private Animator animator;
     // Start is called before the first frame update
@@ -18,18 +18,18 @@ public class Disc : MonoBehaviour
     {
         if (up == Player.Black)
         {
-            animator.Play("BlackToWhite");
-            up = Player.White;
+            animator.Play("BlackToWhite");// 黒から白への反転アニメーションを再生
+            up = Player.White; // 表を白に変更
         }
         else
         {
-            animator.Play("WhiteToBlack");
-            up = Player.Black;
+            animator.Play("WhiteToBlack");//白から黒
+            up = Player.Black; // 表を黒に変更
         }
     }
 
     public  void Twitch()
     {
-        animator.Play("TwitchDisc");
+        animator.Play("TwitchDisc");//カウント時のアニメーション
     }
 }

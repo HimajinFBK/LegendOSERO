@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -157,6 +157,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         yield return ShowCounting();
+
+        uiManager.SetWinnerText(winner);//勝者
+        yield return uiManager.ShowEndScreen();
     }
 
 
@@ -201,4 +204,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator RestartGame()
+    {
+        yield return uiManager.HideEndScreen();
+        Scene activeScene =SceneManager.GetActiveScene();
+        SceneManager.LoadScene(activeScene.name);//シーンリロード
+    }
+
+    public void OnPlayAgainClicked()
+    {
+        StartCoroutine(RestartGame());
+    }
 }
