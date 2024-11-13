@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 
         // 初期ディスクの配置と合法手のハイライト表示、UI更新
         AddStartDiscs();
-        ShowLeglMoves();
+        ShowLegalMoves();
         uiManager.SetPlayerText(gameState.CurrentPlayer);
     }
 
@@ -71,8 +71,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 合法手をハイライト表示するメソッド
-    private void ShowLeglMoves()
+    // 打てる位置をハイライト表示するメソッド
+    private void ShowLegalMoves()
     {
         foreach (Position boardPos in gameState.LegalMoves.Keys)
         {
@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
         HideLegalMoves();
         yield return ShowMonve(moveInfo);
         yield return ShowTurnOutcome(moveInfo);
-        ShowLeglMoves();
+        ShowLegalMoves();
         canMove = true;
     }
 
