@@ -153,49 +153,50 @@ public class GameStete
     }
 
     private List<Position>Outflanked(Position pos,Player player)
-    {
+    {// 全方向で挟まれたディスクを取得
         List<Position>outflanked = new List<Position>();
 
         for(int rDelta = -1; rDelta <= 1; rDelta++)
-        {
-            for(int cDelte = -1; cDelte <= 1; cDelte++)
+        {// 全方向（8方向）を確認
+            for (int cDelte = -1; cDelte <= 1; cDelte++)
             {
                 if (rDelta == 0 && cDelte == 0)
                 {
-                    continue;
+                    continue; // 自分自身の位置は無視
                 }
 
                 outflanked.AddRange(OutflankedInDir(pos, player, rDelta, cDelte));
-
+                // 各方向で挟まれたディスクを追加
             }
         }
         return outflanked;
     }
 
     private bool IsMoveLegal(Player player, Position pos,out List<Position> outflanked)
-    {
-        if (Board[pos.Row, pos.Col] != Player.None)
-        {
+    {// 指定の位置が打てる手か
+        if (Board[pos.Row, pos.Col] != Player.None)// 既にディスクが置かれている場合は不正
+        { 
             outflanked = null;
             return false;
         }
+        // 指定位置で挟めるディスクのリストを取得
         outflanked = Outflanked(pos, player);
         return outflanked.Count > 0;
     }
 
 
     private Dictionary<Position,List<Position>>FindLegalMoves(Player player)
-    {
+    {// 現在のプレイヤーの打てる手を全て
         Dictionary<Position,List<Position>> legalMoves = new Dictionary<Position,List<Position>>();
 
-        for(int r=0; r<Rows; r++)
+        for(int r=0; r<Rows; r++)// ボード内の全ての位置を確認
         {
             for(int c=0; c < Cols; c++)
             {
                 Position pos=new Position(r,c);
 
                 if(IsMoveLegal(player,pos, out List<Position> outflanked))
-                {
+                { // 打てる手がある場合、その位置と挟まれるディスクのリストを記録
                     legalMoves[pos]= outflanked;
                 }
             }
