@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,6 +36,16 @@ public class GameManager : MonoBehaviour
     // 合法手のハイライトを表示するGameObjectのリスト
     private List<GameObject> highlights = new List<GameObject>();
 
+
+    // ゲージUIのImageコンポーネント
+    [SerializeField]
+    private Image gaugeImage;
+
+    private bool isGaugeActive = false;
+    private float gaugeFillTime = 2.0f; // ゲージが満タンになるまでの時間（秒）
+    private Coroutine gaugeCoroutine = null; // ゲージのコルーチンを保持するための変数
+
+
     // Startメソッドはスクリプトが有効になったときに最初に実行される
     void Start()
     {
@@ -46,6 +57,13 @@ public class GameManager : MonoBehaviour
         AddStartDiscs();
         ShowLegalMoves();
         uiManager.SetPlayerText(gameState.CurrentPlayer);
+
+        // ゲージの初期化
+        if (gaugeImage != null)
+        {
+            gaugeImage.fillAmount = 0f;
+            gaugeImage.gameObject.SetActive(false);
+        }
     }
 
     // Updateメソッドは毎フレーム実行される
@@ -57,8 +75,14 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
 
+        // 左クリックが離された場合
+        if (Input.GetMouseButton(0))
+        {
+            // ゲージの表示と開始
+            StartGauge();
+        }
         // 左クリックでボード上をクリックした場合
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
             // カメラからクリック位置に向けてRayを発射し、ボード上のクリック位置を判定
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -67,10 +91,67 @@ public class GameManager : MonoBehaviour
                 Vector3 impact = hitInfo.point;
                 Position boardPos = SceneToBoardPos(impact);
                 OnBoardClicked(boardPos);
+
+                // ゲージの表示と開始
+                StopGauge();
+            }
+        }
+
+        
+    }
+
+    private void StartGauge()
+    {
+        if (gaugeImage != null && !isGaugeActive)
+        {
+            gaugeImage.gameObject.SetActive(true); // ゲージを表示
+            gaugeImage.fillAmount = 0f;
+            isGaugeActive = true;
+            gaugeCoroutine = StartCoroutine(FillGauge());
+        }
+    }
+
+    private void StopGauge()
+    {
+        if (gaugeImage != null && isGaugeActive)
+        {
+            // ゲージ表示を停止し、非表示にする
+            gaugeImage.gameObject.SetActive(false);
+            isGaugeActive = false;
+
+            // ゲージの進行コルーチンを停止
+            if (gaugeCoroutine != null)
+            {
+                StopCoroutine(gaugeCoroutine);
+                gaugeCoroutine = null;
             }
         }
     }
 
+    private IEnumerator FillGauge()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < gaugeFillTime)
+        {
+            elapsedTime += Time.deltaTime;
+            gaugeImage.fillAmount = Mathf.Clamp01(elapsedTime / gaugeFillTime);
+            yield return null;
+        }
+
+       
+    }
+
+    private void OnGaugeFilled()
+    {
+        if (gaugeImage != null)
+        {
+            gaugeImage.gameObject.SetActive(false); // ゲージを非表示
+            isGaugeActive = false;
+        }
+
+        // ゲージが満タンになった時の処理をここに追加
+        Debug.Log("ゲージが満タンになりました！");
+    }
     // 打てる位置をハイライト表示するメソッド
     private void ShowLegalMoves()
     {
