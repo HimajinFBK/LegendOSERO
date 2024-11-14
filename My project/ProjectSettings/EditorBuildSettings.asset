@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/SubFolder/tanaka1919191919/Title.unity
+    guid: 7e50192e20c9638459f46621c219d607
+  - enabled: 1
+    path: Assets/SubFolder/tanaka1919191919/Dammy.unity
+    guid: e532b958cf06efe44b5f5e7c1dbc6efa
   m_configObjects: {}
